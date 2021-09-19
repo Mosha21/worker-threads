@@ -1,0 +1,27 @@
+{
+  "name": "worker-threads",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000w\u0000o\u0000r\u0000k\u0000e\u0000r\u0000-\u0000t\u0000h\u0000r\u0000e\u0000a\u0000d\u0000s\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "dev": "env-cmd -f ./config/dev.env nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mosha21/worker-threads.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mosha21/worker-threads/issues"
+  },
+  "homepage": "https://github.com/Mosha21/worker-threads#readme",
+  "dependencies": {
+    "env-cmd": "^10.1.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
