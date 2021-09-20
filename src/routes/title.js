@@ -1,4 +1,5 @@
 const express = require('express');
+const connection = require('../db/connection');
 
 const { Worker } = require('worker_threads');
 
@@ -14,11 +15,26 @@ actions.forEach((action, index) => {
 
 const router = new express.Router();
 
-router.get('/titles', async (req, res) => {
+router.post('/titles', async (req, res) => {
+    const body = req.body;
+
+    try {
+        await connection.query(
+        `INSERT INTO TITLES (title, date_created, relevance, description_id) 
+         VALUES("${body.title}", "${body.date_created}", ${body.relevance}, 
+         ${body.description_id})`);
+
+        res.status(201).send();
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+router.get('/all', async (req, res) => {
     responseList = [];
 
     // Create new worker
-    const worker = new Worker('./src/worker.js');
+    const worker = new Worker('./utils/worker.js');
 
     // Listen for message
     worker.on('message', result => {
@@ -43,6 +59,6 @@ router.get('/titles', async (req, res) => {
         } else res.status(200).send(responseList);
     }
     wait();
-})
+});
 
 module.exports = router;

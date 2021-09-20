@@ -3,7 +3,7 @@ const connection = require('../src/db/connection');
 const runQuery = (query, callback) => {
     connection.query(query, function(err, result, fields) {
         if (err) throw err;
-        return callback(result[0]);
+        return callback(result);
     });
 }
 

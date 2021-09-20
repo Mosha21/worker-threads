@@ -1,5 +1,5 @@
 const { parentPort, workerData } = require('worker_threads');
-const queries = require('../utils/queries');
+const queries = require('./queries');
 
 parentPort.on('message', data => {
     data.actions.forEach(action => {
