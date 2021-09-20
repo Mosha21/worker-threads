@@ -1,17 +1,8 @@
+// https://livecodestream.dev/post/how-to-work-with-worker-threads-in-nodejs/
 const express = require('express');
 const connection = require('../db/connection');
 
 const { Worker } = require('worker_threads');
-
-// https://livecodestream.dev/post/how-to-work-with-worker-threads-in-nodejs/
-let actions = [1, 2, 3, 4, 5, 6];
-const size = Int32Array.BYTES_PER_ELEMENT*actions.length;
-const sharedBuffer = new SharedArrayBuffer(size);
-const sharedArray = new Int32Array(sharedBuffer);
-
-actions.forEach((action, index) => {
-    Atomics.store(sharedArray, index, action);
-})
 
 const router = new express.Router();
 
@@ -32,6 +23,16 @@ router.post('/titles', async (req, res) => {
 
 router.get('/all', async (req, res) => {
     responseList = [];
+    let actions = [];
+    if(req.query.actions) actions = JSON.parse(req.query.actions);
+    else actions.push(...[1, 2, 3, 4, 5, 6])
+    const size = Int32Array.BYTES_PER_ELEMENT*actions.length;
+    const sharedBuffer = new SharedArrayBuffer(size);
+    const sharedArray = new Int32Array(sharedBuffer);
+
+    actions.forEach((action, index) => {
+        Atomics.store(sharedArray, index, action);
+    })
 
     // Create new worker
     const worker = new Worker('./utils/worker.js');
